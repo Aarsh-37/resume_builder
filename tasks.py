@@ -57,12 +57,12 @@ skill_gap_task = Task(
 
     {job_description}
 
-    Produce
-
+    Produce:
     - ATS Score (/100)
+    - Keyword Analysis
+    - Strengths and Weaknesses
     - Missing Skills
     - Matching Skills
-    - Improvement Plan
 
     Save ATS report separately.
     """,
@@ -74,9 +74,12 @@ skill_gap_task = Task(
 
 improvement_task = Task(
     description="""
-    Based on the gap analysis,
-    create a roadmap for improving
-    the resume and candidate profile.
+    Based on the gap analysis, create an actionable improvement plan.
+    
+    Produce:
+    - Missing Skills to acquire
+    - Recommended Certifications
+    - A step-by-step Career Roadmap
 
     Save in markdown.
     """,
@@ -84,4 +87,21 @@ improvement_task = Task(
     expected_output="Improvement Plan",
 
     output_file="output/improvement_plan.md"
+)
+
+job_scoring_task = Task(
+    description="""
+    You are an ATS algorithm. You have been given a candidate's profile:
+    {profile}
+
+    And a list of job postings in JSON format:
+    {jobs_json}
+
+    For each job, calculate a realistic match score (0-100) based on how well the candidate's skills match the job requirements.
+    
+    Output ONLY a valid JSON array of objects, where each object has exactly two keys: "id" (the integer job id) and "match_score" (integer).
+    DO NOT output any conversational text. DO NOT wrap the output in markdown blocks. 
+    Example: [{"id": 1, "match_score": 85}, {"id": 2, "match_score": 40}]
+    """,
+    expected_output="JSON array of job match scores",
 )

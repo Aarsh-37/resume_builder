@@ -7,7 +7,7 @@ llm = LLM(
 )
 
 resume_agent = Agent(
-    role="Professional Resume Writer",
+    role="Resume Writer",
     goal="Create ATS optimized resume",
     backstory="""
     You are an expert HR professional with years of
@@ -17,24 +17,23 @@ resume_agent = Agent(
     verbose=True,
 )
 
-job_agent = Agent(
-    role="Job Description Analyst",
-    goal="Understand job requirements",
+ats_reviewer_agent = Agent(
+    role="ATS Reviewer",
+    goal="Understand job requirements and evaluate resumes",
     backstory="""
-    You are an expert recruiter.
-    Extract required skills, technologies,
-    responsibilities and qualifications.
+    You are an expert recruiter and Applicant Tracking System (ATS) algorithm.
+    Extract required skills, technologies, and qualifications, then evaluate candidates.
     """,
     llm=llm,
     verbose=True
 )
 
-skill_gap_agent = Agent(
-    role="Skill Gap Expert",
-    goal="Compare resume against job description",
+career_coach_agent = Agent(
+    role="Career Coach",
+    goal="Provide skill gap analysis and career improvement plans",
     backstory="""
-    Compare candidate skills with job requirements
-    and suggest improvements.
+    You are an elite Career Coach. You compare candidate skills with job requirements
+    and suggest actionable roadmaps, certifications, and improvements.
     """,
     llm=llm,
     verbose=True

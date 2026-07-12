@@ -49,3 +49,66 @@ def generate_resume(request: ResumeRequest):
         "ats_report": ats_report_content,
         "improvement_plan": improvement_plan_content
     }
+
+import json
+from crew import job_scoring_crew
+
+@app.post("/api/jobs")
+def get_jobs(request: ResumeRequest):
+    mock_jobs = [
+        {
+            "id": 1,
+            "company": "Google",
+            "title": "Software Engineer, Backend",
+            "location": "Remote",
+            "description": "Looking for a backend engineer with Java, Python, and SQL experience. Must have strong DSA skills.",
+            "apply_link": "https://careers.google.com"
+        },
+        {
+            "id": 2,
+            "company": "Startup Inc",
+            "title": "Full Stack Developer",
+            "location": "New York, NY",
+            "description": "Need a developer experienced in React.js, Node.js, and MongoDB. Fast-paced environment.",
+            "apply_link": "https://startup.com/jobs"
+        },
+        {
+            "id": 3,
+            "company": "FinTech Corp",
+            "title": "Data Analyst",
+            "location": "London, UK",
+            "description": "Requires advanced Excel, Tableau, and financial modeling experience.",
+            "apply_link": "https://fintech.com/careers"
+        },
+        {
+            "id": 4,
+            "company": "Tech Solutions",
+            "title": "Java Spring Boot Developer",
+            "location": "Pune, India",
+            "description": "Looking for 1+ years experience in Java, Spring Boot, REST APIs, and MySQL.",
+            "apply_link": "https://techsolutions.com/apply"
+        }
+    ]
+
+    inputs = {
+        "profile": request.profile,
+        "jobs_json": json.dumps(mock_jobs)
+    }
+
+    result = job_scoring_crew.kickoff(inputs=inputs)
+
+    try:
+        clean_result = str(result).replace("```json", "").replace("```", "").strip()
+        scores = json.loads(clean_result)
+        
+        score_dict = {item['id']: item['match_score'] for item in scores}
+        for job in mock_jobs:
+            job['match_score'] = score_dict.get(job['id'], 50)
+            
+        mock_jobs.sort(key=lambda x: x['match_score'], reverse=True)
+    except Exception as e:
+        print("Error parsing job scores:", e)
+        for job in mock_jobs:
+            job['match_score'] = 75
+            
+    return {"jobs": mock_jobs}
