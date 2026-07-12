@@ -1,32 +1,29 @@
 from crewai import Task
-import os
-
-with open(os.path.join(os.path.dirname(__file__), 'latex_template.txt'), 'r', encoding='utf-8') as f:
-    latex_template = f.read().replace('{', '{{').replace('}', '}}')
 
 resume_task = Task(
-    description=f"""
+    description="""
     Using the student's profile:
 
-    {{profile}}
+    {profile}
 
     Create a professional ATS friendly resume tailored for the job:
-    {{job_description}}
+    {job_description}
 
-    CRITICAL: You MUST output the resume using EXACTLY the following LaTeX template structure.
-    Do NOT output Markdown. Do NOT output any conversational text. Output ONLY valid LaTeX code.
-    Fill in the placeholders (CANDIDATE NAME, SKILLS HERE, EXPERIENCE HERE) with the candidate's actual data.
-    Make sure to strictly adhere to 1 page limit by not making descriptions too long.
+    Theme Style: {theme}
+    CRITICAL: The resume MUST be strictly 1 PAGE MAX. 
+    RULES TO ENFORCE 1-PAGE LIMIT:
+    - Maximum 3 bullet points per work experience.
+    - Keep the professional summary under 3 sentences.
+    - Do not include references or filler words.
+    - Omit irrelevant or very old experience.
 
-    LaTeX Template:
-    {latex_template}
+    Use markdown formatting, but DO NOT wrap your response in ```markdown or ``` code blocks. Output the raw text directly.
 
-    Save only the LaTeX content.
+    Save only resume content.
     """,
-    expected_output="Complete ATS Resume in LaTeX format",
-    output_file="output/resume.tex"
+    expected_output="Complete ATS Resume in Markdown format",
+    output_file="output/resume.md"
 )
-
 
 job_analysis_task = Task(
     description="""
