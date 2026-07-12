@@ -1,0 +1,127 @@
+\documentclass[a4paper,10pt]{article}
+
+\usepackage[hidelinks]{hyperref}
+\usepackage{lipsum}
+
+\pdfstringdefDisableCommands{%
+  \def\color#1{}%
+}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.530in}
+\addtolength{\evensidemargin}{-0.375in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.45in}
+\addtolength{\textheight}{1in}
+
+\urlstyle{rm}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-10pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-6pt}]
+
+%-------------------------
+% Custom commands
+\newcommand{\resumeItem}[2]{
+  \item\small{
+    \textbf{#1}{: #2 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeItemWithoutTitle}[1]{
+  \item\small{
+    {\vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-1pt}\item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{#3} & \textit{#4} \\
+    \end{tabular*}\vspace{-5pt}
+}
+
+
+\newcommand{\resumeSubItem}[2]{\resumeItem{#1}{#2}\vspace{-3pt}}
+
+\renewcommand{\labelitemii}{$\circ$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=*]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+% -----------------------------
+%%%%% CV STARTS HERE  %%%%%%
+
+\begin{document}
+
+
+%----------HEADING-----------------
+
+\begin{tabular*}{\textwidth}{l@{\extracolsep{\fill}}r}
+  \textbf{{\LARGE \color{Blue} CANDIDATE NAME}}\\
+ 
+  \href{https://www.linkedin.com}{Linkedin: CANDIDATE LINKEDIN} & {Email: \href{mailto:email@example.com}{email@example.com}}\\
+  \href{https://github.com}{Github: ~~CANDIDATE GITHUB} & {Mobile:~~~CANDIDATE PHONE} \\
+\end{tabular*}
+
+%-----------EDUCATION-----------------
+
+\section{\color{BlueViolet} Skills Summary}
+	\resumeSubHeadingListStart
+	\resumeSubItem{\color{Blue} Languages}{~~~~~~~~~~~~\hspace{2pt}SKILLS HERE}
+	\resumeSubItem{\color{Blue} Frameworks}{~~~~~~~~~\hspace{3pt}SKILLS HERE}
+	\resumeSubItem{\color{Blue} Tools/Platforms}{~~~\hspace{2pt}SKILLS HERE}
+	\resumeSubItem{\color{Blue} Soft Skills}{~~~~~~~~~~~~\hspace{3pt}SKILLS HERE}
+        \resumeSubHeadingListEnd
+\vspace{-2pt}
+
+\section{\color{BlueViolet} Education}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {\color{Blue} UNIVERSITY}{LOCATION}
+      {DEGREE}{DATE}
+      {\scriptsize \textit{ \footnotesize{\newline{}\textbf{Favorite Courses:} COURSES}}}
+    \resumeSubHeadingListEnd
+
+\vspace{-2pt}
+\section{\color{BlueViolet} Experience}
+\resumeSubHeadingListStart
+    \resumeSubheading{\color{Blue} COMPANY}{LOCATION}
+    {ROLE}{DATES}
+    \resumeItemListStart
+          \resumeItem{Project Overview}
+          {DESCRIPTION HERE}
+      \resumeItemListEnd
+\vspace{0pt}
+\resumeSubHeadingListEnd
+
+%-----------PROJECTS-----------------
+\vspace{5pt}
+\section{\color{BlueViolet} Projects}
+\resumeSubHeadingListStart
+\resumeItem{\color{Blue} PROJECT NAME}{DESCRIPTION HERE}
+\vspace{2pt}
+\resumeSubHeadingListEnd
+\vspace{-5pt}
+
+\section{\color{BlueViolet} Certifications}
+\begin{description}[font=$\bullet$]
+\item {CERTIFICATION 1}
+\vspace{-5pt}
+\end{description}
+\end{document}

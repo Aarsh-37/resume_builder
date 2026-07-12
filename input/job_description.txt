@@ -1,0 +1,29 @@
+Software Engineer
+
+Requirements
+
+Python
+
+FastAPI
+
+Docker
+
+REST API
+
+Git
+
+SQL
+
+CI/CD
+
+Cloud
+
+Responsibilities
+
+Build backend services.
+
+Collaborate with team.
+
+Write unit tests.
+
+Deploy applications.

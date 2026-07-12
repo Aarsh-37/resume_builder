@@ -1,0 +1,21 @@
+Name: Pankaj Singh
+
+Education:
+B.Tech Computer Science
+
+Skills:
+Python
+SQL
+Machine Learning
+Git
+Flask
+
+Projects:
+Resume Builder
+Customer Churn Prediction
+
+Experience:
+Intern at ABC Technologies
+
+Certifications:
+AWS Cloud Practitioner

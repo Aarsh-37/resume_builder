@@ -1,0 +1,10 @@
+crewai
+crewai-tools
+langchain
+langchain-community
+langchain-ollama
+ollama
+python-dotenv
+pydantic
+fastapi
+uvicorn
