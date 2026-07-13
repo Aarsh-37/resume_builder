@@ -25,7 +25,3 @@ npm run dev
 
 Open `http://localhost:3000` in your browser.
 
-## How to use the LaTeX Resume
-1. Generate your resume using the UI.
-2. Click **Download LaTeX (.tex)**.
-3. Drag and drop the downloaded file into [Overleaf.com](https://www.overleaf.com/) to render your perfect PDF!
