@@ -1,29 +1,55 @@
-Software Engineer
+Software Development Engineer (SDE I)
 
-Requirements
-
-Python
-
-FastAPI
-
-Docker
-
-REST API
-
-Git
-
-SQL
-
-CI/CD
-
-Cloud
+We are looking for passionate software engineers who enjoy solving challenging problems and building scalable applications.
 
 Responsibilities
 
-Build backend services.
+Design and develop scalable backend services.
 
-Collaborate with team.
+Build REST APIs.
 
-Write unit tests.
+Write clean and maintainable code.
 
-Deploy applications.
+Collaborate with frontend developers.
+
+Participate in code reviews.
+
+Optimize application performance.
+
+Required Skills
+
+Java
+
+Spring Boot
+
+REST APIs
+
+SQL
+
+Git
+
+Object-Oriented Programming
+
+Data Structures and Algorithms
+
+Database Design
+
+Microservices
+
+Docker
+
+AWS
+
+Preferred Skills
+
+React.js
+
+CI/CD
+
+Redis
+
+Kafka
+
+Linux
+
+Excellent communication skills.
