@@ -105,3 +105,45 @@ job_scoring_task = Task(
     """,
     expected_output="JSON array of job match scores",
 )
+
+cover_letter_task = Task(
+    description="""
+    Using the candidate profile:
+    {profile}
+
+    And the job description:
+    {job_description}
+
+    Write a compelling, professional Cover Letter.
+    Format as markdown (without code blocks).
+    """,
+    expected_output="Professional Cover Letter",
+    output_file="output/cover_letter.md"
+)
+
+linkedin_task = Task(
+    description="""
+    Using the candidate profile:
+    {profile}
+
+    Write a highly engaging LinkedIn 'About' section that highlights their skills and ambitions.
+    Format as markdown (without code blocks).
+    """,
+    expected_output="LinkedIn About Section",
+    output_file="output/linkedin.md"
+)
+
+interview_task = Task(
+    description="""
+    Based on the job description:
+    {job_description}
+
+    And the candidate's profile:
+    {profile}
+
+    Generate 5 technical and 5 behavioral interview questions they are likely to be asked, along with tips on how they should answer based on their specific experience.
+    Format as markdown (without code blocks).
+    """,
+    expected_output="Interview Prep Questions",
+    output_file="output/interview.md"
+)

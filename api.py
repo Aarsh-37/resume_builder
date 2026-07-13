@@ -1,8 +1,9 @@
 import os
+import json
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from crew import resume_crew
+from crew import resume_crew, job_scoring_crew
 
 app = FastAPI()
 
@@ -43,15 +44,18 @@ def generate_resume(request: ResumeRequest):
     resume_content = read_file("resume.md")
     ats_report_content = read_file("ats_report.md")
     improvement_plan_content = read_file("improvement_plan.md")
+    cover_letter_content = read_file("cover_letter.md")
+    linkedin_content = read_file("linkedin.md")
+    interview_content = read_file("interview.md")
     
     return {
         "resume": resume_content,
         "ats_report": ats_report_content,
-        "improvement_plan": improvement_plan_content
+        "improvement_plan": improvement_plan_content,
+        "cover_letter": cover_letter_content,
+        "linkedin_about": linkedin_content,
+        "interview_questions": interview_content
     }
-
-import json
-from crew import job_scoring_crew
 
 @app.post("/api/jobs")
 def get_jobs(request: ResumeRequest):
