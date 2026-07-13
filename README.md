@@ -4,7 +4,6 @@ A full-stack application that leverages AI to generate professional, ATS-friendl
 
 ## Features
 - **AI-Powered Generation**: Built with CrewAI, the app uses agents to analyze job descriptions and optimize your profile.
-- **LaTeX Export**: The resume is generated as a raw `.tex` file using a premium, 1-page professional template. It can be instantly compiled to PDF using Overleaf.
 - **Next.js Frontend**: A sleek, dark-mode, glassmorphism UI built with Next.js (App Router).
 - **FastAPI Backend**: A highly concurrent Python backend that bridges the AI agents with the frontend.
 
