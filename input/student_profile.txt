@@ -1,21 +1,106 @@
-Name: Pankaj Singh
+Name: Aarav Sharma
 
-Education:
-B.Tech Computer Science
+Email: aarav.sharma@gmail.com
+Phone: +91 9876543210
+Location: Pune, Maharashtra
 
-Skills:
+LinkedIn:
+https://linkedin.com/in/aaravsharma
+
+GitHub:
+https://github.com/aaravsharma
+
+Education
+
+B.Tech in Computer Science
+Pune Institute of Computer Technology
+2021 - 2025
+
+CGPA: 8.72
+
+Skills
+
+Programming Languages:
+Java
 Python
+JavaScript
 SQL
-Machine Learning
+
+Frontend:
+React.js
+HTML
+CSS
+Tailwind CSS
+
+Backend:
+Node.js
+Express.js
+
+Database:
+MongoDB
+MySQL
+
+Tools:
 Git
-Flask
+GitHub
+Postman
+VS Code
 
-Projects:
-Resume Builder
-Customer Churn Prediction
+Coursework
 
-Experience:
-Intern at ABC Technologies
+Data Structures and Algorithms
+Operating Systems
+Database Management Systems
+Computer Networks
+Object Oriented Programming
 
-Certifications:
-AWS Cloud Practitioner
+Projects
+
+1. Expense Tracker
+
+Developed a full-stack expense tracking application using React, Node.js, Express, and MongoDB.
+
+Implemented JWT Authentication.
+
+Created analytics dashboard.
+
+Integrated REST APIs.
+
+2. Chat Application
+
+Built a real-time chat application using Socket.io.
+
+Implemented one-to-one messaging.
+
+Added online/offline status.
+
+Stored chat history in MongoDB.
+
+3. Weather Dashboard
+
+Created a responsive React application.
+
+Integrated OpenWeather API.
+
+Implemented city search and weather forecast.
+
+Achievements
+
+Solved 450+ DSA problems.
+
+5-Star Java on HackerRank.
+
+Participated in Smart India Hackathon.
+
+Certificates
+
+Java Programming
+
+React Development
+
+SQL Fundamentals
+
+Languages
+
+English
+Hindi

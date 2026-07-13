@@ -1,0 +1,64 @@
+{
+  "name": "Aarav Sharma",
+  "contact": {
+    "email": "aarav.sharma@gmail.com",
+    "phone": "+91 9876543210",
+    "linkedin": "https://linkedin.com/in/aaravsharma",
+    "github": "https://github.com/aaravsharma"
+  },
+  "summary": "Highly motivated and detail-oriented software engineer with a strong background in computer science, seeking to leverage my skills in designing scalable backend services and building REST APIs.",
+  "skills": [
+    "Java",
+    "Spring Boot",
+    "REST APIs",
+    "SQL",
+    "Git",
+    "Object-Oriented Programming",
+    "Data Structures and Algorithms",
+    "Database Design",
+    "Microservices",
+    "Docker",
+    "AWS"
+  ],
+  "experience": [
+    {
+      "title": "Software Development Engineer (SDE I)",
+      "company": "",
+      "duration": "",
+      "bullets": [
+        "Designed and developed scalable backend services using Java, Spring Boot, and MongoDB.",
+        "Built REST APIs for data exchange between frontend and backend applications.",
+        "Collaborated with cross-functional teams to ensure seamless integration of features."
+      ]
+    },
+    {
+      "title": "Intern",
+      "company": "",
+      "duration": "",
+      "bullets": [
+        "Implemented JWT Authentication in a full-stack expense tracking application using React, Node.js, Express, and MongoDB.",
+        "Created analytics dashboard for data visualization and insights.",
+        "Integrated REST APIs for seamless API calls."
+      ]
+    }
+  ],
+  "education": [
+    {
+      "degree": "B.Tech",
+      "institution": "Pune Institute of Computer Technology",
+      "year": "2021-2025"
+    }
+  ],
+  "projects": [
+    {
+      "name": "Expense Tracker",
+      "description": "A full-stack expense tracking application built using React, Node.js, Express, and MongoDB.",
+      "technologies": "Java, Spring Boot, MongoDB, React.js, HTML, CSS"
+    },
+    {
+      "name": "Chat Application",
+      "description": "A real-time chat application built using Socket.io, with one-to-one messaging and online/offline status features.",
+      "technologies": "JavaScript, Node.js, Express, Socket.io, MongoDB"
+    }
+  ]
+}
