@@ -31,7 +31,6 @@ env.bak/
 venv.bak/
 
 # CrewAI Outputs / Temporary Files
-output/
 *.tex
 *.pdf
 *.docx
