@@ -17,12 +17,26 @@ resume_task = Task(
     - Do not include references or filler words.
     - Omit irrelevant or very old experience.
 
-    Use markdown formatting, but DO NOT wrap your response in ```markdown or ``` code blocks. Output the raw text directly.
-
-    Save only resume content.
+    Use JSON format. Output ONLY raw JSON, with no markdown code blocks wrapping it.
+    The JSON structure MUST follow this exact schema:
+    {
+      "name": "Full Name",
+      "contact": { "email": "...", "phone": "...", "linkedin": "...", "github": "..." },
+      "summary": "Professional Summary",
+      "skills": ["Skill 1", "Skill 2", "..."],
+      "experience": [
+        { "title": "Job Title", "company": "Company", "duration": "Dates", "bullets": ["Point 1", "Point 2"] }
+      ],
+      "education": [
+        { "degree": "Degree", "institution": "School", "year": "Year" }
+      ],
+      "projects": [
+        { "name": "Project Name", "description": "Brief description", "technologies": "Tech stack" }
+      ]
+    }
     """,
-    expected_output="Complete ATS Resume in Markdown format",
-    output_file="output/resume.md"
+    expected_output="Strict JSON object representing the ATS Resume",
+    output_file="output/resume.json"
 )
 
 job_analysis_task = Task(
@@ -64,6 +78,7 @@ skill_gap_task = Task(
     - Missing Skills
     - Matching Skills
 
+    IMPORTANT: Do NOT output JSON. Do NOT include the candidate's raw details. Output ONLY the analysis in professional Markdown format.
     Save ATS report separately.
     """,
 
@@ -81,6 +96,7 @@ improvement_task = Task(
     - Recommended Certifications
     - A step-by-step Career Roadmap
 
+    IMPORTANT: Do NOT output JSON. Format as plain markdown.
     Save in markdown.
     """,
 
@@ -115,7 +131,9 @@ cover_letter_task = Task(
     {job_description}
 
     Write a compelling, professional Cover Letter.
-    Format as markdown (without code blocks).
+    CRITICAL: If the job description is vague or does not provide a specific company name or detailed requirements, do NOT hallucinate or invent a random company or random job details. Use placeholders like [Target Company Name] and write a generalized but strong cover letter based ONLY on the provided relevant sources.
+    
+    IMPORTANT: Do NOT output JSON. Format as plain markdown (without code blocks).
     """,
     expected_output="Professional Cover Letter",
     output_file="output/cover_letter.md"
@@ -127,7 +145,7 @@ linkedin_task = Task(
     {profile}
 
     Write a highly engaging LinkedIn 'About' section that highlights their skills and ambitions.
-    Format as markdown (without code blocks).
+    IMPORTANT: Do NOT output JSON. Format as plain markdown (without code blocks).
     """,
     expected_output="LinkedIn About Section",
     output_file="output/linkedin.md"
@@ -141,8 +159,13 @@ interview_task = Task(
     And the candidate's profile:
     {profile}
 
-    Generate 5 technical and 5 behavioral interview questions they are likely to be asked, along with tips on how they should answer based on their specific experience.
-    Format as markdown (without code blocks).
+    Generate highly tailored interview questions divided into three sections:
+    1. Tech Stack Questions: Deep-dive questions on the specific technologies mentioned in their profile.
+    2. Project Questions: Questions challenging the architecture, decisions, and outcomes of the projects on their resume.
+    3. Normal / Behavioral Questions: Standard culture-fit and behavioral questions.
+    
+    Provide brief tips on how the candidate should answer each question.
+    IMPORTANT: Do NOT output JSON. Format as plain markdown (without code blocks).
     """,
     expected_output="Interview Prep Questions",
     output_file="output/interview.md"

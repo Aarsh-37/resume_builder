@@ -1,6 +1,10 @@
 import os
+import io
 import json
-from fastapi import FastAPI
+import requests
+import re
+from fastapi import FastAPI, UploadFile, File
+import PyPDF2
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from crew import resume_crew, job_scoring_crew
@@ -19,6 +23,18 @@ class ResumeRequest(BaseModel):
     profile: str
     job_description: str
     theme: str = "Modern"
+
+@app.post("/api/upload-pdf")
+async def upload_pdf(file: UploadFile = File(...)):
+    try:
+        contents = await file.read()
+        pdf_reader = PyPDF2.PdfReader(io.BytesIO(contents))
+        extracted_text = ""
+        for page in pdf_reader.pages:
+            extracted_text += page.extract_text() + "\n"
+        return {"extracted_text": extracted_text.strip()}
+    except Exception as e:
+        return {"error": str(e)}
 
 @app.post("/api/generate")
 def generate_resume(request: ResumeRequest):
@@ -41,7 +57,7 @@ def generate_resume(request: ResumeRequest):
                 return f.read()
         return f"{filename} not found."
 
-    resume_content = read_file("resume.md")
+    resume_content = read_file("resume.json")
     ats_report_content = read_file("ats_report.md")
     improvement_plan_content = read_file("improvement_plan.md")
     cover_letter_content = read_file("cover_letter.md")
@@ -59,44 +75,59 @@ def generate_resume(request: ResumeRequest):
 
 @app.post("/api/jobs")
 def get_jobs(request: ResumeRequest):
-    mock_jobs = [
-        {
-            "id": 1,
-            "company": "Google",
-            "title": "Software Engineer, Backend",
-            "location": "Remote",
-            "description": "Looking for a backend engineer with Java, Python, and SQL experience. Must have strong DSA skills.",
-            "apply_link": "https://careers.google.com"
-        },
-        {
-            "id": 2,
-            "company": "Startup Inc",
-            "title": "Full Stack Developer",
-            "location": "New York, NY",
-            "description": "Need a developer experienced in React.js, Node.js, and MongoDB. Fast-paced environment.",
-            "apply_link": "https://startup.com/jobs"
-        },
-        {
-            "id": 3,
-            "company": "FinTech Corp",
-            "title": "Data Analyst",
-            "location": "London, UK",
-            "description": "Requires advanced Excel, Tableau, and financial modeling experience.",
-            "apply_link": "https://fintech.com/careers"
-        },
-        {
-            "id": 4,
-            "company": "Tech Solutions",
-            "title": "Java Spring Boot Developer",
-            "location": "Pune, India",
-            "description": "Looking for 1+ years experience in Java, Spring Boot, REST APIs, and MySQL.",
-            "apply_link": "https://techsolutions.com/apply"
-        }
-    ]
+    import urllib.parse
+    live_jobs = []
+    
+    # Extract search term from job description, fallback to general search
+    search_term = "engineer"
+    if request.job_description:
+        words = request.job_description.split()[:3]
+        search_term = " ".join(words)
+        
+    query = urllib.parse.quote(search_term)
+    try:
+        url = f"https://remotive.com/api/remote-jobs?search={query}&limit=10"
+        response = requests.get(url)
+        if response.status_code == 200:
+            data = response.json()
+            fetched_jobs = data.get("jobs", [])[:10]
+            for i, j in enumerate(fetched_jobs):
+                desc = re.sub('<[^<]+>', '', j.get("description", ""))[:300] + "..."
+                live_jobs.append({
+                    "id": j.get("id", i),
+                    "company": j.get("company_name", "Unknown"),
+                    "title": j.get("title", "Software Engineer"),
+                    "location": j.get("candidate_required_location", "Remote"),
+                    "description": desc,
+                    "apply_link": j.get("url", "#")
+                })
+    except Exception as e:
+        print("Failed to fetch live jobs:", e)
+
+    # Fallback if API fails
+    if not live_jobs:
+        live_jobs = [
+            {
+                "id": 1,
+                "company": "Google",
+                "title": "Software Engineer, Backend",
+                "location": "Remote",
+                "description": "Looking for a backend engineer with Java, Python, and SQL experience. Must have strong DSA skills.",
+                "apply_link": "https://careers.google.com"
+            },
+            {
+                "id": 2,
+                "company": "Startup Inc",
+                "title": "Full Stack Developer",
+                "location": "New York, NY",
+                "description": "Need a developer experienced in React.js, Node.js, and MongoDB. Fast-paced environment.",
+                "apply_link": "https://startup.com/jobs"
+            }
+        ]
 
     inputs = {
         "profile": request.profile,
-        "jobs_json": json.dumps(mock_jobs)
+        "jobs_json": json.dumps(live_jobs)
     }
 
     result = job_scoring_crew.kickoff(inputs=inputs)
@@ -106,13 +137,13 @@ def get_jobs(request: ResumeRequest):
         scores = json.loads(clean_result)
         
         score_dict = {item['id']: item['match_score'] for item in scores}
-        for job in mock_jobs:
+        for job in live_jobs:
             job['match_score'] = score_dict.get(job['id'], 50)
             
-        mock_jobs.sort(key=lambda x: x['match_score'], reverse=True)
+        live_jobs.sort(key=lambda x: x['match_score'], reverse=True)
     except Exception as e:
         print("Error parsing job scores:", e)
-        for job in mock_jobs:
+        for job in live_jobs:
             job['match_score'] = 75
             
-    return {"jobs": mock_jobs}
+    return {"jobs": live_jobs}

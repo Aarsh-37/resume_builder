@@ -5,6 +5,7 @@ import { marked } from 'marked';
 import { saveAs } from 'file-saver';
 import { pdf, Document, Page, StyleSheet } from '@react-pdf/renderer';
 import Html from 'react-pdf-html';
+import ResumeTemplate, { ResumeData } from './ResumeTemplate';
 
 const pdfStyles = StyleSheet.create({
   page: {
@@ -38,6 +39,7 @@ export default function Home() {
   const [jobDescription, setJobDescription] = useState('');
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<{resume: string, ats_report: string, improvement_plan: string, cover_letter: string, linkedin_about: string, interview_questions: string} | null>(null);
+  const [parsedResume, setParsedResume] = useState<ResumeData | null>(null);
 
   const [jobs, setJobs] = useState<Job[]>([]);
   const [jobsLoading, setJobsLoading] = useState(false);
@@ -47,6 +49,8 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [exportLoading, setExportLoading] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(true);
+  const [isDragging, setIsDragging] = useState(false);
+  const [uploadingPdf, setUploadingPdf] = useState(false);
 
   useEffect(() => {
     if (isDarkMode) {
@@ -55,6 +59,38 @@ export default function Home() {
       document.body.classList.add('light-mode');
     }
   }, [isDarkMode]);
+
+  const handleFileUpload = async (file: File) => {
+    if (file.type !== 'application/pdf') {
+      alert('Please upload a valid PDF file.');
+      return;
+    }
+    setUploadingPdf(true);
+    const formData = new FormData();
+    formData.append('file', file);
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/upload-pdf', {
+        method: 'POST',
+        body: formData,
+      });
+      if (!response.ok) throw new Error('Failed to parse PDF');
+      const data = await response.json();
+      if (data.error) throw new Error(data.error);
+      setProfile(data.extracted_text);
+    } catch (err: any) {
+      alert(err.message || 'Error parsing PDF');
+    } finally {
+      setUploadingPdf(false);
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      handleFileUpload(e.dataTransfer.files[0]);
+    }
+  };
 
   const handleFetchJobs = async () => {
     if (!profile) return;
@@ -94,6 +130,13 @@ export default function Home() {
 
       const data = await response.json();
       setResults(data);
+      try {
+        let resumeText = data.resume;
+        resumeText = resumeText.replace(/```json/gi, '').replace(/```/g, '').trim();
+        setParsedResume(JSON.parse(resumeText));
+      } catch (e) {
+        console.error("Failed to parse resume JSON", e);
+      }
       setActiveTab('resume');
     } catch (err: any) {
       setError(err.message || 'An error occurred while connecting to the backend. Is the FastAPI server running?');
@@ -107,9 +150,15 @@ export default function Home() {
     setExportLoading(true);
 
     try {
-      // Strip markdown codeblocks just in case
-      const cleanMarkdown = results.resume.replace(/^```(markdown)?\n/, '').replace(/\n```$/, '');
-      const htmlString = marked.parse(cleanMarkdown) as string;
+      let htmlString = "";
+      const templateEl = document.getElementById('resume-template-container');
+      if (templateEl) {
+        htmlString = templateEl.outerHTML;
+      } else {
+        const cleanMarkdown = results.resume.replace(/^```(markdown)?\n/, '').replace(/\n```$/, '');
+        htmlString = marked.parse(cleanMarkdown) as string;
+      }
+
       const styledHtml = `
         <html>
           <body>
@@ -143,8 +192,14 @@ export default function Home() {
     setExportLoading(true);
 
     try {
-      const cleanMarkdown = results.resume.replace(/^```(markdown)?\n/, '').replace(/\n```$/, '');
-      const htmlString = marked.parse(cleanMarkdown) as string;
+      let htmlString = "";
+      const templateEl = document.getElementById('resume-template-container');
+      if (templateEl) {
+        htmlString = templateEl.outerHTML;
+      } else {
+        const cleanMarkdown = results.resume.replace(/^```(markdown)?\n/, '').replace(/\n```$/, '');
+        htmlString = marked.parse(cleanMarkdown) as string;
+      }
       const wordHtml = `
         <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
         <head><meta charset='utf-8'><title>Resume</title></head>
@@ -202,14 +257,39 @@ export default function Home() {
               Input Details
             </h2>
 
-            <div className="input-group">
-              <label className="label">Student Profile / Experience</label>
+            <div 
+              className="input-group"
+              onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+              onDragLeave={(e) => { e.preventDefault(); setIsDragging(false); }}
+              onDrop={handleDrop}
+            >
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                <label className="label" style={{ marginBottom: 0 }}>Student Profile / Experience</label>
+                <div>
+                  <input
+                    type="file"
+                    accept="application/pdf"
+                    id="pdf-upload"
+                    style={{ display: 'none' }}
+                    onChange={(e) => {
+                      if (e.target.files && e.target.files.length > 0) {
+                        handleFileUpload(e.target.files[0]);
+                      }
+                    }}
+                  />
+                  <label htmlFor="pdf-upload" className="btn-outline" style={{ padding: '0.3rem 0.6rem', fontSize: '0.8rem', cursor: 'pointer', display: 'flex', gap: '0.3rem', alignItems: 'center', borderRadius: '6px' }}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                    Upload PDF
+                  </label>
+                </div>
+              </div>
               <textarea
-                className="textarea"
-                style={{ minHeight: '120px' }}
-                placeholder="Paste your profile, education, skills, and past experience here..."
-                value={profile}
+                className={`textarea ${isDragging ? 'drag-active' : ''}`}
+                style={{ minHeight: '120px', position: 'relative' }}
+                placeholder={isDragging ? "Drop PDF here!" : "Paste your profile, education, skills... OR drag and drop your existing Resume PDF here!"}
+                value={uploadingPdf ? "Parsing PDF... Please wait." : profile}
                 onChange={(e) => setProfile(e.target.value)}
+                disabled={uploadingPdf}
               />
             </div>
 
@@ -300,12 +380,7 @@ export default function Home() {
                     >
                       Cover Letter
                     </button>
-                    <button 
-                      className={`tab-btn ${activeTab === 'linkedin' ? 'active' : ''}`}
-                      onClick={() => setActiveTab('linkedin')}
-                    >
-                      LinkedIn
-                    </button>
+
                     <button 
                       className={`tab-btn ${activeTab === 'interview' ? 'active' : ''}`}
                       onClick={() => setActiveTab('interview')}
@@ -376,7 +451,13 @@ export default function Home() {
                             <div key={job.id} className="card fade-in" style={{ borderLeft: `4px solid ${job.match_score >= 80 ? '#10b981' : job.match_score >= 60 ? '#f59e0b' : '#ef4444'}` }}>
                               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                                 <div>
-                                  <h3 style={{ color: '#f8fafc', fontSize: '1.25rem', marginBottom: '0.25rem' }}>{job.title}</h3>
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
+                                    <h3 style={{ color: '#f8fafc', fontSize: '1.25rem', margin: 0 }}>{job.title}</h3>
+                                    <span style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', padding: '0.2rem 0.5rem', borderRadius: '4px', fontSize: '0.7rem', display: 'flex', alignItems: 'center', gap: '0.2rem' }}>
+                                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                                      Trusted Source (Remotive)
+                                    </span>
+                                  </div>
                                   <p style={{ color: '#94a3b8', fontSize: '0.9rem', marginBottom: '0.5rem' }}>{job.company} • {job.location}</p>
                                 </div>
                                 <div style={{ textAlign: 'center', background: 'rgba(255,255,255,0.05)', padding: '0.5rem 1rem', borderRadius: '8px' }}>
@@ -395,6 +476,8 @@ export default function Home() {
                       </div>
                     )}
                   </div>
+                ) : activeTab === 'resume' && parsedResume ? (
+                  <ResumeTemplate data={parsedResume} onChange={setParsedResume} />
                 ) : (
                   <div className="markdown-wrapper">
                     <div className="markdown-body">

@@ -199,6 +199,12 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.1);
 }
 
+.drag-active {
+  border-color: var(--primary) !important;
+  background: var(--primary-glow) !important;
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.2);
+}
+
 .textarea:focus + .label, .input-group:focus-within .label {
   color: var(--secondary);
 }
