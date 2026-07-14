@@ -8,13 +8,13 @@ This project evolved from a standard markdown resume generator into a **Professi
 
 ##  Features
 
-- ** Multi-Agent AI System (CrewAI)**: A team of highly specialized AI agents (Resume Writer, ATS Reviewer, Career Coach) work sequentially to evaluate and build your profile.
-- ** Live Interactive UI Editor**: The generated resume isn't just static text—it's rendered into a beautiful, two-column CSS grid that you can click and edit *live* before exporting.
-- ** Real-Time Remote Job Scraping**: Integrates directly with the **Remotive API** to fetch live, verified software development jobs based on your exact profile.
-- ** AI Job Scoring**: Every live job fetched is automatically scored against your profile (0-100%) by the ATS AI Agent, giving you clear insight into your match strength.
-- ** Drag-and-Drop PDF Parsing**: Automatically extract your existing skills and experience by dropping your old resume PDF right into the browser.
-- ** Flawless Export (PDF & Word)**: Export your heavily stylized, modified resume directly to an ATS-friendly PDF or Microsoft Word `.doc` file with absolute precision.
-- ** Comprehensive Career Toolkit**: In addition to the resume, the AI generates:
+- **Multi-Agent AI System (CrewAI)**: A team of highly specialized AI agents (Resume Writer, ATS Reviewer, Career Coach) work sequentially to evaluate and build your profile.
+- **Live Interactive UI Editor**: The generated resume isn't just static text—it's rendered into a beautiful, two-column CSS grid that you can click and edit *live* before exporting.
+- **Real-Time Remote Job Scraping**: Integrates directly with the **Remotive API** to fetch live, verified software development jobs based on your exact profile.
+- **AI Job Scoring**: Every live job fetched is automatically scored against your profile (0-100%) by the ATS AI Agent, giving you clear insight into your match strength.
+- **Drag-and-Drop PDF Parsing**: Automatically extract your existing skills and experience by dropping your old resume PDF right into the browser.
+- **Flawless Export (PDF & Word)**: Export your heavily stylized, modified resume directly to an ATS-friendly PDF or Microsoft Word `.doc` file with absolute precision.
+- **Comprehensive Career Toolkit**: In addition to the resume, the AI generates:
   - **Cover Letters** tailored exactly to the target job (no hallucinated companies!).
   - **Skill Gap & ATS Reports** highlighting missing keywords.
   - **Improvement Plans** mapping out projects and certs to bridge your gaps.
